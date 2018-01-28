@@ -20,7 +20,7 @@ def login():
             error = 'Invalid username/password'
         else:
             flask.session['logged_in'] = True
-            flask.flash('Successfully logged in!')
+            flask.flash('Successfully logged in!', 'success')
             return flask.redirect(flask.url_for('start_page'))
     return flask.render_template('login.html', error=error)
 
@@ -66,11 +66,11 @@ def config():
         pw2 = dict_.pop('password2')
         if old != '':
             if not classes.helpers.verify_password(old, CONFIG.settings.password):
-                flask.flash('wrong old password, new password not set', 'error')
+                flask.flash('wrong old password, new password not set', 'danger')
             elif pw1 != pw2:
-                flask.flash('new passwords didn\'t match, new password not set', 'error')
+                flask.flash('new passwords didn\'t match, new password not set', 'danger')
             elif pw1 == '':
-                flask.flash('new password is empty, not setting new password', 'error')
+                flask.flash('new password is empty, not setting new password', 'danger')
             else:
                 dict_['web:password'] = classes.helpers.hash_password(pw1)
 
@@ -105,7 +105,7 @@ def add_or_remove(action):
     uid_or_name = classes.helpers.try_eval(flask.request.args['uid_or_name'])
     result = classes.models.get_model(uid_or_name)
     if result is None:
-        flask.flash('uid or name "{}" not found'.format(uid_or_name), 'error')
+        flask.flash('uid or name "{}" not found'.format(uid_or_name), 'danger')
     else:
         action(*result)
     return flask.redirect(flask.url_for('start_page'))
