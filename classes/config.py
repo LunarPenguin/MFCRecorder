@@ -265,6 +265,6 @@ class Wanted():
     def _is_list_mode_value(self, uid, value):
         '''determines if list_mode equals the specified one, but only if the item is enabled'''
         entry = self.dict.get(uid)
-        if not (entry and entry['enabled'] and self._settings.priority <= entry['priority']):
+        if not entry or entry['enabled'] != True or entry['priority'] <= self._settings.priority:
             return False
         return entry['list_mode'] == value
